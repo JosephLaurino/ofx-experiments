@@ -10,7 +10,8 @@ class ofApp : public ofBaseApp
 public:
     void setup()
     {
-        ofSetColor(0, 0, 0);        // set line color to black
+        ofSetWindowShape(100, 100);
+        ofSetColor(0, 0, 0);
     }
     void draw()
     {

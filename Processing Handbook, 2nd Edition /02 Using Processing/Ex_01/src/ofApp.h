@@ -7,6 +7,7 @@ class ofApp : public ofBaseApp
 public:
     void setup()
     {
+        ofSetWindowShape(100, 100); 
         ofSetColor(0, 0, 0);        // set line color to black
     }
     void draw()
