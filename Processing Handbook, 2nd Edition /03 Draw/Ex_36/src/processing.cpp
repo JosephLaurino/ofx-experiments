@@ -222,11 +222,30 @@ namespace processing
     // float: height of the ellipse by default
     void ellipse(float x,float y, float width, float height)
     {
-        ofPath p = ofPath();
-        handlePathDrawStyle(p);
-        p.setCircleResolution(100);
-        p.ellipse(x,y,width,height);
-        p.draw();
+        /*
+            // drawing ellipse via ofPath generates a rendering bug when
+            // rendering the stroke
+         
+            ofPath p = ofPath();
+            handlePathDrawStyle(p);
+            p.setCircleResolution(100);
+            p.ellipse(x,y,width,height);
+            p.draw();
+         
+         */
+        
+        if(m_hasFill)
+        {
+            ofFill();
+            ofSetColor(m_fillColor); //fill color
+            ofDrawEllipse(x,y,width,height);
+        }
+        if( m_hasStroke )
+        {
+            ofNoFill();
+            ofSetColor(m_strokeColor);//stroke color
+            ofDrawEllipse(x,y,width,height);
+        }
     }
     
     // x      float: x-coordinate of the arc's ellipse
@@ -245,7 +264,7 @@ namespace processing
         p.draw();
     }
     
-    void resetDrawFlags()
+    void resetDrawSettings()
     {
         fill(255.0f);
         stroke(0.0f);

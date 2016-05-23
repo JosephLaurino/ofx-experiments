@@ -6,6 +6,7 @@ using namespace processing; // so that we don't have to type processing::
 
 class ofApp : public ofBaseApp
 {
+    float x = 0;
 public:
     void setup()
     {
@@ -13,12 +14,26 @@ public:
     }
     void draw()
     {
-        processing::resetDrawFlags();
-
+        processing::resetDrawSettings();
+/*
         rect(10, 10, 50, 50);
         noFill();  // Disable the fill
         rect(20, 20, 50, 50);
         rect(30, 30, 50, 50);
+  */
+        
+        background(204);
+        if (x < 80) {
+            if (x < 40) {
+                ellipse(50, 50, 20, 20);  // Small circle
+            } else {
+                ellipse(50, 50, 60, 60);  // Large circle
+            }
+        } else {
+            rect(20, 20, 60, 60);
+        }
+        line(x, 0, x, 100);
+        x += 0.25;
         
         
         /*
