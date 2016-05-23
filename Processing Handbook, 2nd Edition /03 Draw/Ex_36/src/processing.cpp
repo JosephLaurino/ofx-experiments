@@ -80,15 +80,15 @@ namespace processing
         m_fillColor.a = alpha;
     }
     
-    void stroke(int rgb)
+    void stroke(int rgb, float alpha)
     {
-        m_strokeColor.setHex(rgb);
+        m_strokeColor.setHex(rgb | (int) alpha);
         m_hasStroke = true;
     }
     
-    void stroke(float gray)
+    void stroke(float gray, float alpha)
     {
-        m_strokeColor.set(gray);
+        m_strokeColor.set(gray, gray, gray, alpha);
         m_hasStroke = true;
     }
     
@@ -118,6 +118,38 @@ namespace processing
     float degrees( float rad )
     {
         return rad * 180.0f / m_pi;
+    }
+    
+    void blendMode(BlendMode mode)
+    {
+        switch(mode)
+        {
+            case BLEND:      // - linear interpolation of colours: C = A*factor + B. This is the default blending mode.
+                ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+                break;
+            case ADD:        // - additive blending with white clip: C = min(A*factor + B, 255)
+                ofEnableBlendMode(OF_BLENDMODE_ADD);
+                break;
+            case SUBTRACT:   // - subtractive blending with black clip: C = max(B - A*factor, 0
+                ofEnableBlendMode(OF_BLENDMODE_SUBTRACT);
+                break;
+            case DARKEST:    // - only the darkest colour succeeds: C = min(A*factor, B)
+                break;
+            case LIGHTEST:   // - only the lightest colour succeeds: C = max(A*factor, B)
+                break;
+            case DIFFERENCE: // - subtract colors from underlying image.
+                break;
+            case EXCLUSION:  // - similar to DIFFERENCE, but less extreme.
+                break;
+            case MULTIPLY:   // - multiply the colors, result will always be darker.
+                ofEnableBlendMode(OF_BLENDMODE_MULTIPLY);
+                break;
+            case SCREEN:     // - opposite multiply, uses inverse values of the colors.
+                ofEnableBlendMode(OF_BLENDMODE_SCREEN);
+                break;
+            case REPLACE:     // -
+                break;
+        }
     }
     
     void handlePathDrawStyle(ofPath& p)
@@ -214,6 +246,7 @@ namespace processing
         fill(255.0f);
         stroke(0.0f);
         strokeWeight(1);
+        ofEnableBlendMode(OF_BLENDMODE_ALPHA);
     }
     
 }

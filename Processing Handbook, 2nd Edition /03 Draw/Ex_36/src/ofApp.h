@@ -21,13 +21,13 @@ public:
         rect(20, 20, 50, 50);
         rect(30, 30, 50, 50);
   */
-        background(255);
-        noStroke();
-        fill(242, 204, 47, 160);   // Yellow
-        ellipse(47, 36, 64, 64);
-        fill(174, 221, 60, 160);   // Green
-        ellipse(90, 47, 64, 64);
-        fill(116, 193, 206, 160);  // Blue
-        ellipse(57, 79, 64, 64);
+        stroke(153.0f, 204);
+        strokeWeight(12);
+        background(0);
+        line(20, 20, 40, 80);
+        line(40, 20, 20, 80);
+        blendMode(ADD);  // Change blend mode
+        line(60, 20, 80, 80);
+        line(80, 20, 60, 80);
     }
 };
