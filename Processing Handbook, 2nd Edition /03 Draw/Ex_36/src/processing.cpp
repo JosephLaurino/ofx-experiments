@@ -29,11 +29,6 @@ namespace processing
         ofBackground(rgb);
     }
     
-    void background(ofColor color)
-    {
-        ofBackground(color);
-    }
-    
     void background(float v1, float v2, float v3)
     {
         ofBackground(ofColor(v1,v2,v3));
@@ -49,6 +44,16 @@ namespace processing
         m_hasStroke = false;
     }
     
+    void smooth(int level)
+    {
+        ofEnableAntiAliasing();
+    }
+    
+    void noSmooth()
+    {
+        ofDisableAntiAliasing();
+    }
+    
     void fill(ofColor color)
     {
         m_hasFill = true;
@@ -58,7 +63,7 @@ namespace processing
     void fill(int rgb)
     {
         m_hasFill = true;
-        m_fillColor.setHex(rgb);
+        m_fillColor.set(rgb);
     }
     
     void fill(float gray)
@@ -67,22 +72,21 @@ namespace processing
         m_fillColor.set(gray);
     }
     
+    void fill(int v1, int v2, int v3, float alpha)
+    {
+        m_hasFill = true;
+        m_fillColor = ofColor(v1,v2,v3, alpha);
+    }
+    
     void fill(float v1, float v2, float v3, float alpha)
     {
         m_hasFill = true;
         m_fillColor = ofColor(v1,v2,v3, alpha);
     }
     
-    void fill(ofColor color, float alpha)
-    {
-        m_hasFill = true;
-        m_fillColor = color;
-        m_fillColor.a = alpha;
-    }
-    
     void stroke(int rgb, float alpha)
     {
-        m_strokeColor.setHex(rgb | (int) alpha);
+        m_strokeColor.set(rgb | (int) alpha);
         m_hasStroke = true;
     }
     
@@ -92,9 +96,9 @@ namespace processing
         m_hasStroke = true;
     }
     
-    void stroke(ofColor color)
+    void stroke(int v1, int v2, int v3, float alpha)
     {
-        m_strokeColor = color;
+        m_strokeColor = ofColor(v1,v2,v3,alpha);
         m_hasStroke = true;
     }
     
@@ -247,6 +251,7 @@ namespace processing
         stroke(0.0f);
         strokeWeight(1);
         ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+        smooth(2);
     }
     
 }
