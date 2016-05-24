@@ -28,7 +28,5 @@ public:
         fill(0, 159);
         ellipse(ix, height/2, iy, iy);
     }
-    
-
 };
 
