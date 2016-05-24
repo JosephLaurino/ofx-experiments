@@ -7,12 +7,13 @@ using namespace processing; // so that we don't have to type processing::
 class ofApp : public ofBaseApp
 {
     string key = "";
+    float angle = 0;
     
 public:
     void setup()
     {
         size(100, 100);
-        strokeWeight(4);
+        fill(0);
     }
     
     void draw()
@@ -24,13 +25,17 @@ public:
         rect(20, 20, 50, 50);
         rect(30, 30, 50, 50);
 */
+        
+        
         background(204);
-        // If the 'A' key is pressed draw a line
-        if ((processing::keyPressed == true) && (key[0] == 'A')) {
-            line(50, 25, 50, 75);
-        } else {  // Otherwise, draw an ellipse
-            ellipse(50, 50, 50, 50);
-        }
+        if (processing::keyPressed == true) {
+            if ((key[0] >= 32) && (key[0] <= 126)) {
+                // If the key is alphanumeric,
+                // convert its value into an angle
+                angle = processing::map(key[0], 32, 126, 0, 360);
+            }
+        } 
+        arc(50, 50, 66, 66, 0, radians(angle));
     }
     
     void keyPressed(int _key)
