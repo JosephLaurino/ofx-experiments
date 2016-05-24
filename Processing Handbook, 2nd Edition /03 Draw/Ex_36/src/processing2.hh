@@ -44,21 +44,24 @@ namespace processing
     extern bool keyPressed;
     extern MouseButton mouseButton;
     
-    // math
-    // http://www.teacherschoice.com.au/maths_library/angles/angles.htm
-    float radians(float deg);
-    // http://www.teacherschoice.com.au/maths_library/angles/angles.htm
-    float degrees( float rad );
-    
-    // graphics
+
+
+    // Environment
+
     void size( int width, int height );
-    void background(int rgb);
-    void background(float v1, float v2, float v3);
     void frameRate(float fps);
-    void noFill();
-    void noStroke();
     void smooth(int level);
     void noSmooth();
+    
+    // ----------------------------------
+    // Graphics
+    // ----------------------------------
+    
+    // Color Setting
+    void background(int rgb);
+    void background(float v1, float v2, float v3);
+    void noFill();
+    void noStroke();
     void fill(int rgb, float alpha = 255.0f);
     void fill(float gray, float alpha = 255.0f);
     void fill(int v1, int v2, int v3, float alpha = 255.0f);
@@ -67,21 +70,51 @@ namespace processing
     void stroke(float gray, float alpha = 255.0f);
     void stroke(int v1, int v2, int v3, float alpha = 255.0f);
     void stroke(float v1, float v2, float v3, float alpha = 255.0f);
-    void strokeWeight(float weight);
+    
+    // ----------------------------------
+    // Rendering
+    // ----------------------------------
+    
     void blendMode(BlendMode mode);
+    
+    
+    // ----------------------------------
+    // Shape
+    // ----------------------------------
+    
+    // 2D Primitives
+    
     void triangle(float x1, float y1, float x2, float y2, float x3, float y3);
     void rect( float x, float y, float width, float height );
-    void bezier( float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
     void line( float x1, float y1, float x2, float y2);
     void ellipse(float x,float y, float width, float height);
     void arc(float x, float y, float width, float height, float start, float stop );
     
+    // Curves
     
-    // typography
-    void text(char c, float x, float);
+    void bezier( float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
+    
+    // Attributes
+    void strokeWeight(float weight);
+    
+    // ----------------------------------
+    // Typography
+    // ----------------------------------
+    
+    void text(string& text, float x, float);
     void textSize(float size);
     
     
+    // ----------------------------------
+    // Math
+    // ----------------------------------
+    
+    // Calculations
+    float radians(float deg);
+    float degrees( float rad );
+    
+    
+    //
     void resetDrawSettings(); // call this at the top of the draw() method
 }
 

@@ -11,22 +11,45 @@
 namespace processing
 {
     float   m_pi = 3.14159265358979f;
+
+    bool    m_inSetup = true; // set to true when resetDrawSettings() is called
+    
+    ofColor m_defaultFillColor = ofColor(255);
+    ofColor m_defaultStrokeColor = ofColor(0);
+    float   m_defaultStrokeWeight  = 1.0f;
+    bool    m_defaultHasFill = true;
+    bool    m_defaultHasStroke = true;
+    
     ofColor m_fillColor = ofColor(255);
-    ofColor m_strokeColor = ofColor(255);
+    ofColor m_strokeColor = ofColor(0);
     float   m_strokeWeight  = 1.0f;
     bool    m_hasFill = true;
     bool    m_hasStroke = true;
+    int     width = 100;
+    int     height = 100;
+    int     pmouseX = 0;
+    int     pmouseY = 0;
+    bool    mousePressed = false;
+    bool    keyPressed = false;
+    MouseButton mouseButton = NONE;
+    
+    ofTrueTypeFont  m_currentTextFont;
+    float           m_textSize = 14.0f;
     
     
     void size( int width, int height )
     {
-        ofSetWindowShape(100, 100);
+        ofSetWindowShape(width, height);
+        width = ofGetWidth();
+        height = ofGetHeight();
     }
     
     void background(int rgb)
     {
-        // ofBackgroundHex(rgb);
-        ofBackground(rgb);
+        if( rgb > 255 )
+            ofBackgroundHex(rgb);
+        else
+            ofBackground(rgb);
     }
     
     void background(float v1, float v2, float v3)
@@ -34,14 +57,23 @@ namespace processing
         ofBackground(ofColor(v1,v2,v3));
     }
     
+    void frameRate(float fps)
+    {
+        ofSetFrameRate(fps);
+    }
+    
     void noFill()
     {
         m_hasFill = false;
+        if( m_inSetup )
+            m_defaultHasFill = false;
     }
     
     void noStroke()
     {
         m_hasStroke = false;
+        if( m_inSetup )
+            m_defaultHasStroke = false;
     }
     
     void smooth(int level)
@@ -54,63 +86,88 @@ namespace processing
         ofDisableAntiAliasing();
     }
     
-    void fill(ofColor color)
+    void fill(int rgb, float alpha)
     {
         m_hasFill = true;
-        m_fillColor = color;
+        if( rgb > 255 )
+            m_fillColor.setHex(rgb, alpha);
+        else
+            m_fillColor.set(rgb, alpha);
+        
+        if( m_inSetup )
+            m_defaultFillColor = m_fillColor;
     }
     
-    void fill(int rgb)
+    void fill(float gray, float alpha)
     {
         m_hasFill = true;
-        m_fillColor.set(rgb);
-    }
-    
-    void fill(float gray)
-    {
-        m_hasFill = true;
-        m_fillColor.set(gray);
+        m_fillColor.set(gray,alpha);
+        
+        if( m_inSetup )
+            m_defaultFillColor = m_fillColor;
     }
     
     void fill(int v1, int v2, int v3, float alpha)
     {
         m_hasFill = true;
         m_fillColor = ofColor(v1,v2,v3, alpha);
+        
+        if( m_inSetup )
+            m_defaultFillColor = m_fillColor;
     }
     
     void fill(float v1, float v2, float v3, float alpha)
     {
         m_hasFill = true;
         m_fillColor = ofColor(v1,v2,v3, alpha);
+        
+        if( m_inSetup )
+            m_defaultFillColor = m_fillColor;
     }
     
     void stroke(int rgb, float alpha)
     {
-        m_strokeColor.set(rgb | (int) alpha);
+        m_strokeColor.setHex(rgb, alpha);
         m_hasStroke = true;
+        
+        if( m_inSetup )
+            m_defaultStrokeColor = m_strokeColor;
     }
     
     void stroke(float gray, float alpha)
     {
         m_strokeColor.set(gray, gray, gray, alpha);
         m_hasStroke = true;
+        
+        if( m_inSetup )
+            m_defaultStrokeColor = m_strokeColor;
     }
     
     void stroke(int v1, int v2, int v3, float alpha)
     {
         m_strokeColor = ofColor(v1,v2,v3,alpha);
         m_hasStroke = true;
+        
+        if( m_inSetup )
+            m_defaultStrokeColor = m_strokeColor;
     }
     
     void stroke(float v1, float v2, float v3, float alpha)
     {
         m_strokeColor = ofColor(v1,v2,v3,alpha);
         m_hasStroke = true;
+        
+        if( m_inSetup )
+            m_defaultStrokeColor = m_strokeColor;
     }
     
     void strokeWeight(float weight)
     {
         m_strokeWeight = weight;
+        ofSetLineWidth(m_strokeWeight);
+        
+        if( m_inSetup )
+            m_defaultStrokeWeight = weight;
     }
     
     // http://www.teacherschoice.com.au/maths_library/angles/angles.htm
@@ -183,7 +240,7 @@ namespace processing
         p.draw();
     }
     
-    float bezier( float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4)
+    void bezier( float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4)
     {
         ofPath p = ofPath();
         handlePathDrawStyle(p);
@@ -264,13 +321,56 @@ namespace processing
         p.draw();
     }
     
+    void handleDefaultTextFont(float size)
+    {
+        if( m_currentTextFont.isLoaded() == false )
+        {
+            m_currentTextFont.load("verdana.ttf", size, true, true);
+        }
+        else if( m_currentTextFont.getSize() != size)
+        {
+            m_currentTextFont.load("verdana.ttf", size, true, true);
+        }
+    }
+    
+    void text(string& text, float x, float y)
+    {
+        handleDefaultTextFont(m_textSize);
+        m_currentTextFont.drawString(text, x, y);
+    }
+    
+    void textSize(float size)
+    {
+        m_textSize = size;
+        
+        handleDefaultTextFont(size);
+    }
+    
     void resetDrawSettings()
     {
-        fill(255.0f);
-        stroke(0.0f);
-        strokeWeight(1);
+        m_inSetup = false;
+        fill(m_defaultFillColor.getHex());
+        stroke(m_defaultStrokeColor.getHex());
+        strokeWeight(m_defaultStrokeWeight);
+        m_hasFill = m_defaultHasFill;
+        m_hasStroke = m_defaultHasStroke;
         ofEnableBlendMode(OF_BLENDMODE_ALPHA);
         smooth(2);
+        width = ofGetWidth();
+        height = ofGetHeight();
+        pmouseX = ofGetPreviousMouseX();
+        pmouseY = ofGetPreviousMouseY();
+        keyPressed = ofGetKeyPressed();
+        mousePressed = ofGetMousePressed();
+        mouseButton = NONE;
+        if( ofGetMousePressed(0) )
+            mouseButton = LEFT;
+        else if(ofGetMousePressed(1))
+            mouseButton = RIGHT;
+        
+        
+        ofSetCircleResolution(100);
+        ofSetCurveResolution(100);
     }
     
 }

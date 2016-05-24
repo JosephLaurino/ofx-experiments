@@ -6,12 +6,15 @@ using namespace processing; // so that we don't have to type processing::
 
 class ofApp : public ofBaseApp
 {
-    float x = 0;
+    string key = "";
+    
 public:
     void setup()
     {
-        size(100,100);
+        size(100, 100);
+        strokeWeight(4);
     }
+    
     void draw()
     {
         processing::resetDrawSettings();
@@ -20,33 +23,19 @@ public:
         noFill();  // Disable the fill
         rect(20, 20, 50, 50);
         rect(30, 30, 50, 50);
-  */
-        
+*/
         background(204);
-        if (x < 80) {
-            if (x < 40) {
-                ellipse(50, 50, 20, 20);  // Small circle
-            } else {
-                ellipse(50, 50, 60, 60);  // Large circle
-            }
-        } else {
-            rect(20, 20, 60, 60);
+        // If the 'A' key is pressed draw a line
+        if ((processing::keyPressed == true) && (key[0] == 'A')) {
+            line(50, 25, 50, 75);
+        } else {  // Otherwise, draw an ellipse
+            ellipse(50, 50, 50, 50);
         }
-        line(x, 0, x, 100);
-        x += 0.25;
-        
-        
-        /*
-        noStroke();
-        fill(206, 60, 60);
-        rect(0, 0, 20, 100);
-        fill(186, 89, 60);
-        rect(20, 0, 20, 100);
-        fill(166, 118, 60);
-        rect(40, 0, 20, 100);
-        fill(147, 147, 60);
-        rect(60, 0, 20, 100);
-        fill(108, 206, 60);
-        rect(80, 0, 20, 100);*/
+    }
+    
+    void keyPressed(int _key)
+    {
+        key.clear();
+        key.push_back((char)_key);
     }
 };
