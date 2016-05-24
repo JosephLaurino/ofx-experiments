@@ -1,10 +1,15 @@
 //
-//  processing.cpp
-//  Ex_08
+//  processing.cpp -- see https://processing.org/reference/ for Processing API documentation
 //
-//  Created by Joseph Laurino on 5/22/16.
+//  I got the book Processing Handbook, 2nd Edition as a secret santa gift and I've been meaning to
+//  learn Processing.  I also want to learn OpenFrameworks.
 //
+//  Why not learn both?
 //
+//  So this is my attept of implementing the Processing API as I encounter them in reading the
+//  Processing Handbook
+//
+//  -Joseph Laurino (5/22/16)
 
 #include "processing.hpp"
 
