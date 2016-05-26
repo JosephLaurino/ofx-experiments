@@ -55,11 +55,16 @@ namespace processing
             ofBackgroundHex(rgb);
         else
             ofBackground(rgb);
+        
+        ofSetBackgroundAuto(true);
+        ofEnableBlendMode(OF_BLENDMODE_ALPHA);
     }
     
     void background(float v1, float v2, float v3)
     {
         ofBackground(ofColor(v1,v2,v3));
+        ofSetBackgroundAuto(true);
+        ofEnableBlendMode(OF_BLENDMODE_ALPHA);
     }
     
     void frameRate(float fps)
@@ -132,7 +137,11 @@ namespace processing
     
     void stroke(int rgb, float alpha)
     {
-        m_strokeColor.setHex(rgb, alpha);
+        if( rgb > 255 )
+            m_strokeColor.setHex(rgb, alpha);
+        else
+            m_strokeColor.set(rgb, alpha);
+        
         m_hasStroke = true;
         
         if( m_inSetup )
@@ -267,6 +276,18 @@ namespace processing
         p.draw();
     }
     
+    void quad(float x1,float y1,float x2,float y2,float x3, float y3, float x4, float y4)
+    {
+        ofPath p = ofPath();
+        handlePathDrawStyle(p);
+        p.moveTo(x1,y1);
+        p.lineTo(x2,y2);
+        p.lineTo(x3,y3);
+        p.lineTo(x4,y4);
+        p.close();
+        p.draw();
+    }
+    
     void triangle(float x1, float y1, float x2, float y2, float x3, float y3)
     {
         ofPath p = ofPath();
@@ -344,6 +365,13 @@ namespace processing
         m_currentTextFont.drawString(text, x, y);
     }
     
+    void text(char c, float x, float y)
+    {
+        string txt;
+        txt.push_back(c);
+        text(txt, x, y);
+    }
+    
     void textSize(float size)
     {
         m_textSize = size;
@@ -359,13 +387,14 @@ namespace processing
     
     void resetDrawSettings()
     {
+        
         m_inSetup = false;
         fill(m_defaultFillColor.getHex());
         stroke(m_defaultStrokeColor.getHex());
         strokeWeight(m_defaultStrokeWeight);
+        
         m_hasFill = m_defaultHasFill;
         m_hasStroke = m_defaultHasStroke;
-        ofEnableBlendMode(OF_BLENDMODE_ALPHA);
         smooth(2);
         width = ofGetWidth();
         height = ofGetHeight();
@@ -379,7 +408,8 @@ namespace processing
         else if(ofGetMousePressed(1))
             mouseButton = RIGHT;
         
-        
+        ofSetBackgroundAuto(false);
+        ofEnableBlendMode(OF_BLENDMODE_ALPHA);
         ofSetCircleResolution(100);
         ofSetCurveResolution(100);
     }

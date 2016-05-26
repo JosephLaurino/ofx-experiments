@@ -58,6 +58,8 @@ namespace processing
     void frameRate(float fps);
     void smooth(int level);
     void noSmooth();
+    void cursor();
+    void noCursor();
     
     // ----------------------------------
     // Graphics
@@ -92,6 +94,7 @@ namespace processing
     
     void triangle(float x1, float y1, float x2, float y2, float x3, float y3);
     void rect( float x, float y, float width, float height );
+    void quad(float x1,float y1,float x2,float y2,float x3, float y3, float x4, float y4);
     void line( float x1, float y1, float x2, float y2);
     void ellipse(float x,float y, float width, float height);
     void arc(float x, float y, float width, float height, float start, float stop );
@@ -108,6 +111,7 @@ namespace processing
     // ----------------------------------
     
     void text(string& text, float x, float);
+    void text(char c, float x, float);
     void textSize(float size);
     
     
