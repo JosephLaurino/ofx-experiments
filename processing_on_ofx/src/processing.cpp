@@ -67,6 +67,16 @@ namespace processing
         ofEnableBlendMode(OF_BLENDMODE_ALPHA);
     }
     
+    void cursor()
+    {
+        ofShowCursor();
+    }
+    
+    void noCursor()
+    {
+        ofHideCursor();
+    }
+    
     void frameRate(float fps)
     {
         ofSetFrameRate(fps);
@@ -104,6 +114,8 @@ namespace processing
         else
             m_fillColor.set(rgb, alpha);
         
+        ofSetColor(m_fillColor);
+        
         if( m_inSetup )
             m_defaultFillColor = m_fillColor;
     }
@@ -112,6 +124,19 @@ namespace processing
     {
         m_hasFill = true;
         m_fillColor.set(gray,alpha);
+        
+        ofSetColor(m_fillColor);
+        
+        if( m_inSetup )
+            m_defaultFillColor = m_fillColor;
+    }
+    
+    void fill(double gray, float alpha)
+    {
+        m_hasFill = true;
+        m_fillColor.set(gray,alpha);
+        
+        ofSetColor(m_fillColor);
         
         if( m_inSetup )
             m_defaultFillColor = m_fillColor;
@@ -122,6 +147,8 @@ namespace processing
         m_hasFill = true;
         m_fillColor = ofColor(v1,v2,v3, alpha);
         
+        ofSetColor(m_fillColor);
+        
         if( m_inSetup )
             m_defaultFillColor = m_fillColor;
     }
@@ -130,6 +157,8 @@ namespace processing
     {
         m_hasFill = true;
         m_fillColor = ofColor(v1,v2,v3, alpha);
+        
+        ofSetColor(m_fillColor);
         
         if( m_inSetup )
             m_defaultFillColor = m_fillColor;
@@ -149,6 +178,15 @@ namespace processing
     }
     
     void stroke(float gray, float alpha)
+    {
+        m_strokeColor.set(gray, gray, gray, alpha);
+        m_hasStroke = true;
+        
+        if( m_inSetup )
+            m_defaultStrokeColor = m_strokeColor;
+    }
+    
+    void stroke(double gray, float alpha)
     {
         m_strokeColor.set(gray, gray, gray, alpha);
         m_hasStroke = true;
@@ -240,6 +278,11 @@ namespace processing
         {
             p.setStrokeWidth(0);
         }
+    }
+    
+    void point(float x, float y)
+    {
+        ellipse(x, y, 1, 1);
     }
     
     void rect( float x, float y, float width, float height )
@@ -359,10 +402,10 @@ namespace processing
         }
     }
     
-    void text(string& text, float x, float y)
+    void text(string textString, float x, float y)
     {
         handleDefaultTextFont(m_textSize);
-        m_currentTextFont.drawString(text, x, y);
+        m_currentTextFont.drawString(textString, x, y);
     }
     
     void text(char c, float x, float y)
@@ -383,19 +426,45 @@ namespace processing
     {
         return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
     }
+    
+    void println(int num)
+    {
+        string numAsString = to_string(num);
+        println(numAsString);
+    }
+    
+    void println(float num)
+    {
+        string numAsString = to_string(num);
+        println(numAsString);
+    }
 
+    void println(string str)
+    {
+        ofLog() << str;
+    }
     
     void resetDrawSettings()
     {
-        
         m_inSetup = false;
+        
+        // processing resets these settings before each draw method
+        // so to mimic processing, call this function at the top of the
+        // draw method
         fill(m_defaultFillColor.getHex());
         stroke(m_defaultStrokeColor.getHex());
         strokeWeight(m_defaultStrokeWeight);
-        
         m_hasFill = m_defaultHasFill;
         m_hasStroke = m_defaultHasStroke;
         smooth(2);
+        
+        if( m_hasFill )
+        {
+            ofSetColor(m_defaultFillColor);
+            ofFill();
+        }
+        
+        // store variables for use in draw method
         width = ofGetWidth();
         height = ofGetHeight();
         pmouseX = ofGetPreviousMouseX();
@@ -403,13 +472,17 @@ namespace processing
         keyPressed = ofGetKeyPressed();
         mousePressed = ofGetMousePressed();
         mouseButton = NONE;
+        
         if( ofGetMousePressed(0) )
             mouseButton = LEFT;
         else if(ofGetMousePressed(1))
             mouseButton = RIGHT;
         
+        // in processing, unless background() is called within the draw method
+        // the current background is not cleared!
         ofSetBackgroundAuto(false);
         ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+        // let's have great looking graphics, openFrameworks default is 20 
         ofSetCircleResolution(100);
         ofSetCurveResolution(100);
     }

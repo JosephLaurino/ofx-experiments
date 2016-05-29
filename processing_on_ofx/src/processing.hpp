@@ -72,10 +72,12 @@ namespace processing
     void noStroke();
     void fill(int rgb, float alpha = 255.0f);
     void fill(float gray, float alpha = 255.0f);
+    void fill(double gray, float alpha = 255.0f);
     void fill(int v1, int v2, int v3, float alpha = 255.0f);
     void fill(float v1, float v2, float v3, float alpha = 255.0f);
     void stroke(int rgb, float alpha = 255.0f);
     void stroke(float gray, float alpha = 255.0f);
+    void stroke(double gray, float alpha = 255.0f);
     void stroke(int v1, int v2, int v3, float alpha = 255.0f);
     void stroke(float v1, float v2, float v3, float alpha = 255.0f);
     
@@ -92,6 +94,7 @@ namespace processing
     
     // 2D Primitives
     
+    void point(float x, float y);
     void triangle(float x1, float y1, float x2, float y2, float x3, float y3);
     void rect( float x, float y, float width, float height );
     void quad(float x1,float y1,float x2,float y2,float x3, float y3, float x4, float y4);
@@ -110,7 +113,7 @@ namespace processing
     // Typography
     // ----------------------------------
     
-    void text(string& text, float x, float);
+    void text(string textString, float x, float);
     void text(char c, float x, float);
     void textSize(float size);
     
@@ -123,6 +126,11 @@ namespace processing
     float radians(float deg);
     float degrees( float rad );
     float map(float value, float istart, float istop, float ostart, float ostop);
+    
+    //
+    void println(int num);
+    void println(float num);
+    void println(string str);
     
     //
     void resetDrawSettings(); // call this at the top of the draw() method
