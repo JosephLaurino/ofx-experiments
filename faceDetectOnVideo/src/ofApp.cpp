@@ -4,7 +4,6 @@
 void ofApp::setup()
 {
     finder.setup("haarcascade_frontalface_default.xml");
-    finder.findHaarObjects(img);
     
     // video
     camWidth = 640;
