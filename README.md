@@ -10,6 +10,7 @@ Directory Structure
 -------------------
 * Processing Handbook, 2nd Edition
 * processing_on_ofx 
+* faceDetectOnVideo (facetracking in 60 lines of code)
 
 
 The Processing Handbook, 2nd Edition folder contains ports of the example Processing code in the book converted to their openFramework equivalent.  Hopefully this helps simplify the learning process of someone familiar with Processing into the world of C++.

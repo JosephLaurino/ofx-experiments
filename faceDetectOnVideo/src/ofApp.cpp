@@ -34,7 +34,7 @@ void ofApp::update()
         
         if(vidGrabber.isFrameNew())
         {
-            ofPixels & pixels = vidGrabber.getPixels();
+            ofPixels& pixels = vidGrabber.getPixels();
             img.setFromPixels(pixels);
             finder.findHaarObjects(img);
         }
